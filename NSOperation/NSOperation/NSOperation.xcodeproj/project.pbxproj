@@ -15,6 +15,7 @@
 		97D96FAD1F32C36E00E8FE97 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 97D96FAB1F32C36E00E8FE97 /* LaunchScreen.storyboard */; };
 		97D96FB81F32C36E00E8FE97 /* NSOperationTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 97D96FB71F32C36E00E8FE97 /* NSOperationTests.m */; };
 		97D96FC31F32C36E00E8FE97 /* NSOperationUITests.m in Sources */ = {isa = PBXBuildFile; fileRef = 97D96FC21F32C36E00E8FE97 /* NSOperationUITests.m */; };
+		97D96FD21F32D15400E8FE97 /* BelleOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 97D96FD11F32D15400E8FE97 /* BelleOperation.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -51,6 +52,8 @@
 		97D96FBE1F32C36E00E8FE97 /* NSOperationUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = NSOperationUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		97D96FC21F32C36E00E8FE97 /* NSOperationUITests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = NSOperationUITests.m; sourceTree = "<group>"; };
 		97D96FC41F32C36E00E8FE97 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		97D96FD01F32D15400E8FE97 /* BelleOperation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BelleOperation.h; sourceTree = "<group>"; };
+		97D96FD11F32D15400E8FE97 /* BelleOperation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BelleOperation.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -105,6 +108,8 @@
 				97D96FA11F32C36E00E8FE97 /* AppDelegate.m */,
 				97D96FA31F32C36E00E8FE97 /* ViewController.h */,
 				97D96FA41F32C36E00E8FE97 /* ViewController.m */,
+				97D96FD01F32D15400E8FE97 /* BelleOperation.h */,
+				97D96FD11F32D15400E8FE97 /* BelleOperation.m */,
 				97D96FA61F32C36E00E8FE97 /* Main.storyboard */,
 				97D96FA91F32C36E00E8FE97 /* Assets.xcassets */,
 				97D96FAB1F32C36E00E8FE97 /* LaunchScreen.storyboard */,
@@ -273,6 +278,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				97D96FD21F32D15400E8FE97 /* BelleOperation.m in Sources */,
 				97D96FA51F32C36E00E8FE97 /* ViewController.m in Sources */,
 				97D96FA21F32C36E00E8FE97 /* AppDelegate.m in Sources */,
 				97D96F9F1F32C36E00E8FE97 /* main.m in Sources */,

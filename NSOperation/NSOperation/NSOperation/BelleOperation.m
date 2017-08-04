@@ -9,5 +9,10 @@
 #import "BelleOperation.h"
 
 @implementation BelleOperation
-
+//要执行的任务
+- (void)main {
+    for (int i = 0; i < 2; ++i) {
+        NSLog(@"方式三 1------%@",[NSThread currentThread]);
+    }
+}
 @end
