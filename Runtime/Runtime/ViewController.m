@@ -8,6 +8,7 @@
 
 #import "ViewController.h"
 #import "UIImage+Image.h"
+#import <objc/runtime.h>
 
 
 #import "NSObject+Property.h"
@@ -124,9 +125,118 @@ objc = objc_msgSend(objc, @selector(init));
  
  
 Runtime字典转模型
+ 字典转模型KVC实现
+        KVC转模型的弊端：必须保证模型中的属性和字典中的key是一一对应。
+        不一致就会调用 setValue:forUndefinedKey: 报找不到key的错。
+        模型中的属性和字典的key不一一对应，系统就会调用 setValue:forUndefinedKey: 报错。
+        解决方法：重写对象的  setValue:forUndefinedKey: ，把系统的方法覆盖，就能就行使用KVC，字典转模型了。
+ 
+ 字典转模型Runtime实现
+        利用运行时，遍历模型中所有属性，根据模型属性名，字典中查找key，取出对应的值，给模型的属性赋值。
+ 考虑：
+    1.当字典的key和模型的属性匹配不上
+    2.模型中嵌套模型（模型属性是另外一个模型对象）
+    3.数组中装着模型（模型的属性是一个数组，数组中是一个一个模型对象）
+ 注释：根据上面的三种情况，显示字典的key和模型的属性不对应的情况。不对应有两种，一种是字典的键值大于模型属性数量这时候我们不哟啊任何处理，因为Runtime是先遍历模型所有属性，再去字典中根据属性名找到对应进行赋值，多余的兼职对也当然不会去看；另外一种是模型属性数量大于字典的键值对，这时候属于属性没有对应值会被赋值为nil，就会导致crash，我们需要加一个判断即可。
+ 
+    步骤：提供一个NSObject分类，专门字典转模型，以后所有模型都可以通过这个分类实现字典转模型。
+ 
+ MJExtension字典转模型的实现
+    底层也是对Runtime的封装，才可以吧一个模型中所有属性遍历粗来。
+ 
 
+ 字典转模型  Runtime的实现方式
+    示例使考虑了是那种情况包含在内的转换示例。
+ 参考image_one.png
+ 
+ 1.Runtime字典转模型-->字典的key和模型的属性不匹配【模型属性数量大于字典键值对数量】，这种情况处理如下：
+ 
  */
++ (instancetype)modelWithDic:(NSDictionary *)dict {
+    
+//    创建对应的对象
+    id objc = [[self alloc] init];
+//    利用Runtime给对象中的属性赋值
+    unsigned int count = 0;
+//    获取类中所有的成员变量
+    Ivar *ivarlList = class_copyIvarList(self, &count);
+    
+//    遍历所有成员变量
+    for (int i = 0; i < count; i++) {
+//根据角标，从数组取出对应的成员变量
+        Ivar ivar = ivarlList[i];
+//        获取成员变量名字
+        NSString *ivarName = [NSString stringWithUTF8String:ivar_getName(ivar)];
+//        处理成员变量名->字典中的key（去掉_，送第一个角标开始截取）
+        NSString *key = [ivarName substringFromIndex:1];
+//        根据成员属性名去字典中查找对应的Value
+        id value = dict[key];
+//        如果模型属性数量大于字典键值对数理，模型属性会被赋值为nil 而报错（could not set nil as the value for key age）
+        if (value) {
+            //给模型中属性赋值
+            [objc setValue:value forKey:key];
+        }
+    }
+    return objc;
+}
+/*
+ 总结：获取模型类中的所有属性名，是采用class_copyIvarList先获取成员变量（下划线开头），然后在处理成员变量名->字典中的key(去掉_,从第一个角标开始截取)得到属性名。
+ 原因：Ivar：成员变量，一下划线开头，Property属性
+ 获取类里边的属性class_copyPropertyList
+ 获取类中的所有成员变量class_copyIvarList
+ {
+    int _a;
+ }
+ @property (nonatomic,assign) NSInterger attitudes_count; //属性
+ 这里有成员变量 就不会漏掉属性； 如果有属性，可能会漏掉成员变量
+ */
++ (instancetype)modelWithDic2:(NSDictionary *)dict {
+//    1.创建对应的对象
+    id objc = [[self alloc] init];
+//    2.利用runtime给对象总的属性赋值
+    unsigned int count = 0;
+//    获取类中的所有成员变量
+    Ivar *ivarList = class_copyIvarList(self, &count);
+    
+//    遍历所有成员变量
+    for (int i = 0; i < count; i++) {
+//         根据角标，从数组中取出对应的成员变量
+        Ivar ivar = ivarList[i];
+//        获取成员变量的名字
+        NSString *ivarName = [NSString stringWithUTF8String:ivar_getName(ivar)];
+//        获取成员变量类型
+        NSString *ivartype = [NSString stringWithUTF8String:ivar_getTypeEncoding(ivar)];
+        
+//        替换@\"User\" -->User
+        ivartype = [ivartype stringByReplacingOccurrencesOfString:@"\"" withString:@""];
+        ivartype = [ivartype stringByReplacingOccurrencesOfString:@"@" withString:@""];
+        
+//        处理成员属性名——>字典中的key（去掉_,从第一个角标开始截取）
+        NSString *key = [ivarName substringFromIndex:1];
+//        根据成员属性名去字典中查找对应的value
+        id value = dict[key];
+        
+//       二级转换 如果字典中还有字典，也需要把对应的字典转换成模型
+//        判断下value 是否是字典 并且是自定义对象才需要转换
+        if ([value isKindOfClass:[NSDictionary class]] && [ivartype hasPrefix:@"NS"]) {
+//            字典转换模型 useDict ——>User模型 转换成哪个模型
+//            根据字符串类名生成类对象
+            Class modelClass = NSClassFromString(ivartype);
+            
+            if (modelClass) {//有对应的模型才需要转
+//            把字典转模型
+                value = [modelClass modelWithDic2:value];
+            }
+        }
+        
+//        给模型中属性赋值
+        if (value) {
+            [objc setValue:value forKey:key];
+        }
+    }
+    return objc;
 
+}
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
