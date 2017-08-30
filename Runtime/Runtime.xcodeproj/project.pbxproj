@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		975DA0001F3BFC17009E4145 /* Person.m in Sources */ = {isa = PBXBuildFile; fileRef = 975D9FFF1F3BFC17009E4145 /* Person.m */; };
+		975DA0041F3C01AB009E4145 /* Movie.m in Sources */ = {isa = PBXBuildFile; fileRef = 975DA0031F3C01AB009E4145 /* Movie.m */; };
 		97CE31551F399DED00EA43BD /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 97CE31541F399DED00EA43BD /* main.m */; };
 		97CE31581F399DED00EA43BD /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 97CE31571F399DED00EA43BD /* AppDelegate.m */; };
 		97CE315B1F399DED00EA43BD /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 97CE315A1F399DED00EA43BD /* ViewController.m */; };
@@ -37,6 +39,10 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		975D9FFE1F3BFC17009E4145 /* Person.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Person.h; sourceTree = "<group>"; };
+		975D9FFF1F3BFC17009E4145 /* Person.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Person.m; sourceTree = "<group>"; };
+		975DA0021F3C01AB009E4145 /* Movie.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Movie.h; sourceTree = "<group>"; };
+		975DA0031F3C01AB009E4145 /* Movie.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Movie.m; sourceTree = "<group>"; };
 		97CE31501F399DED00EA43BD /* Runtime.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Runtime.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		97CE31541F399DED00EA43BD /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		97CE31561F399DED00EA43BD /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
@@ -84,6 +90,24 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		975D9FFD1F3BFBC6009E4145 /* 动态添加方法 */ = {
+			isa = PBXGroup;
+			children = (
+				975D9FFE1F3BFC17009E4145 /* Person.h */,
+				975D9FFF1F3BFC17009E4145 /* Person.m */,
+			);
+			name = "动态添加方法";
+			sourceTree = "<group>";
+		};
+		975DA0011F3C017E009E4145 /* 实现NSCoding的自动归档和解档 */ = {
+			isa = PBXGroup;
+			children = (
+				975DA0021F3C01AB009E4145 /* Movie.h */,
+				975DA0031F3C01AB009E4145 /* Movie.m */,
+			);
+			name = "实现NSCoding的自动归档和解档";
+			sourceTree = "<group>";
+		};
 		97CE31471F399DED00EA43BD = {
 			isa = PBXGroup;
 			children = (
@@ -111,6 +135,8 @@
 				97CE31571F399DED00EA43BD /* AppDelegate.m */,
 				97CE31591F399DED00EA43BD /* ViewController.h */,
 				97CE315A1F399DED00EA43BD /* ViewController.m */,
+				975DA0011F3C017E009E4145 /* 实现NSCoding的自动归档和解档 */,
+				975D9FFD1F3BFBC6009E4145 /* 动态添加方法 */,
 				97CE318C1F39BC4900EA43BD /* Runtime动态添加属性 */,
 				97CE318B1F39B64300EA43BD /* Runtime交换方法 */,
 				97CE315C1F399DED00EA43BD /* Main.storyboard */,
@@ -299,7 +325,9 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				975DA0001F3BFC17009E4145 /* Person.m in Sources */,
 				97CE315B1F399DED00EA43BD /* ViewController.m in Sources */,
+				975DA0041F3C01AB009E4145 /* Movie.m in Sources */,
 				97CE31881F39AE8A00EA43BD /* UIImage+Image.m in Sources */,
 				97CE31581F399DED00EA43BD /* AppDelegate.m in Sources */,
 				97CE318F1F39BC7000EA43BD /* NSObject+Property.m in Sources */,

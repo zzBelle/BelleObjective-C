@@ -10,6 +10,7 @@
 #import "UIImage+Image.h"
 #import <objc/runtime.h>
 
+#import "Person.h"
 
 #import "NSObject+Property.h"
 
@@ -73,6 +74,12 @@ objc = objc_msgSend(objc, @selector(init));
     NSObject *objc = [[NSObject alloc] init];
     objc.name = @"123";
     NSLog(@"runtime动态添加属性name==%@",objc.name);
+    
+    
+//   动态添加方法
+//    Person *person = [[Person alloc] init];
+////    默认person没有实现run:方法 可以通过performSelector调用但是报错。 动态添加方法就不会报错
+//    [person performSelector:@selector(run:) withObject:@10];
 }
 
 /*
@@ -237,6 +244,21 @@ Runtime字典转模型
     return objc;
 
 }
+
+/*
+ 动态添加方法
+    应用场景：如果一个类方法非常多，加载类到内存的时候也比较耗费资源，需要给每个方法生成映射表，可以使用动态给某个类添加方法解决。
+ 解释：OC中我们会习惯使用懒加载，当用到的时候才去加载它，但是实际上只要一个类实现了某个方法，就会被加载进内存。当我们不想加载那么多方法的时候，就会使用Runtime动态添加方法。
+ 
+ 需求：runtime 动态添加方法处理调用一个 未实现的方法 和 去除报错。
+ 
+ 
+ */
+
+/*
+ 动态变量控制
+ 
+ */
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
